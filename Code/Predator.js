@@ -4,15 +4,15 @@ class predator extends boid{
         super(x,y);
 
         //Max Speed
-        this.maxspeed=1.5;
+        this.maxspeed=2;
 
         //Max force -  used to apply the desired direction smoothly to the acceleration
         this.maxforce = 0.1;
 
         //The rules view range
-        this.separationView=25;
-        this.alignmentView=50;
-        this.cohesionView=75;
+        this.separationView=25*rangeSliderPredator.value();
+        this.alignmentView=50*rangeSliderPredator.value();
+        this.cohesionView=75*rangeSliderPredator.value();
     
     }
 
@@ -128,6 +128,10 @@ class predator extends boid{
         let cohesionVector= new vector(0,0);
         let cohesionTotal = 0;
         
+        this.separationView=25*rangeSliderPredator.value();
+        this.alignmentView=50*rangeSliderPredator.value();
+        this.cohesionView=75*rangeSliderPredator.value();
+
         for (let other of boidsArray) {
             
             //Separation
@@ -170,7 +174,7 @@ class predator extends boid{
             let dy=other.pos.getY()-this.pos.getY();
             let dist = Math.sqrt(dx*dx + dy*dy); 
 
-            if (other !== this&& dist <= this.separationView*3) {
+            if (other !== this&& dist <= 125) {
                 let diff=new vector(dx,dy);
                 diff.multi(10/dist)
                 huntVector.add(diff); 

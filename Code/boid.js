@@ -9,9 +9,9 @@ class boid{
         this.maxforce = 0.5;
 
         //The rules view range
-        this.separationView=25;
-        this.alignmentView=50;
-        this.cohesionView=75;
+        this.separationView=25*rangeSlider.value();
+        this.alignmentView=50*rangeSlider.value();
+        this.cohesionView=75*rangeSlider.value();
         
         //Position
         this.pos=new vector(x,y);
@@ -166,6 +166,10 @@ class boid{
         //Cohesion
         let cohesionVector= new vector(0,0);
         let cohesionTotal = 0;
+
+        this.separationView=25*rangeSlider.value();
+        this.alignmentView=50*rangeSlider.value();
+        this.cohesionView=75*rangeSlider.value();
         
         for (let other of boidsArray) {
             
@@ -209,7 +213,7 @@ class boid{
             let dy=this.pos.getY()-other.pos.getY();
             let dist = Math.sqrt(dx*dx + dy*dy); 
 
-            if (other !== this&& dist <= this.separationView*3) {
+            if (other !== this&& dist <= 75) {
                 let diff=new vector(dx,dy);
                 diff.multi(10/dist)
                 runAwayVector.add(diff); 

@@ -5,7 +5,7 @@ let predators=[];
 
 
 //Number of boids
-let num=200;
+let num=300;
 
 let predatorNum=5;
 
@@ -22,11 +22,14 @@ let alignmentSlider;
 let cohesionSlider;
 let runAwaySlider;
 
+let rangeSlider;
+
 let separationSliderPredator;
 let alignmentSliderPredator;
 let cohesionSliderPredator;
 let huntSlider;
 
+let rangeSliderPredator;
 
 function setup() 
 {
@@ -43,6 +46,11 @@ function setup()
 	cohesionSlider.position(5, height+52)
 	runAwaySlider = createSlider(0, 1,0,0.1);
 	runAwaySlider.position(5, height+78)
+
+	rangeSlider = createSlider(0.5,2,1,0.5)
+	rangeSlider.position(150,height+39)
+	rangeSlider.style('transform', 'rotate(270deg)');
+	rangeSlider.style('width', '80px');
 	
 	separationSliderPredator = createSlider(0, 5,0,0.5);
 	separationSliderPredator.position(width-165, height+3)
@@ -52,6 +60,11 @@ function setup()
 	cohesionSliderPredator.position(width-165, height+52)
 	huntSlider = createSlider(0, 1,0,0.1);
 	huntSlider.position(width-165, height+78)
+
+	rangeSliderPredator = createSlider(0.5,2,1,0.5)
+	rangeSliderPredator.position(width-230,height+39)
+	rangeSliderPredator.style('transform', 'rotate(270deg)');
+	rangeSliderPredator.style('width', '80px');
 
 	// Color list for the boids because they have multiple shapes and colors
 	boidColor=[color(200,200,0),color(150,150,0),color(100,100,0),color(200,200,0)]
