@@ -7,7 +7,7 @@ class predator extends boid{
         this.maxspeed=2;
 
         //Max force -  used to apply the desired direction smoothly to the acceleration
-        this.maxforce = 0.1;
+        this.maxforce = 0.15;
 
         //The rules view range
         this.separationView=25*rangeSliderPredator.value();

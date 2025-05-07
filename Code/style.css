@@ -2,3 +2,65 @@
     margin: 0;
     padding: 0;
 }
+
+
+
+.slider {
+    -webkit-appearance: none;
+    appearance: none; /* removes browser-specific styling */
+    width: 170px; /* width of slider */
+    height: 5px; /* height of slider */
+    background: rgb(200,50,0) ; /* orange background */
+    outline: none; /* remove outline */
+    border-radius: 10px; /* round corners */
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 20px;
+    outline: none;
+    background: rgb(200,200,0);
+    cursor: pointer;
+   
+}
+
+.slider::-moz-range-thumb {
+    width: 15px;
+    height: 20px;
+    outline: none;
+    background:rgb(200,200,0);;
+    cursor: pointer;
+    
+}
+
+.sliderPredator {
+    -webkit-appearance: none;
+    appearance: none; /* removes browser-specific styling */
+    width: 170px; /* width of slider */
+    height: 5px; /* height of slider */
+    background: rgb(100,0,200) ; /* orange background */
+    outline: none; /* remove outline */
+    border-radius: 10px; /* round corners */
+}
+
+.sliderPredator::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 20px;
+    outline: none;
+    background: rgb(200, 0, 200);
+    cursor: pointer;
+   
+}
+
+.sliderPredator::-moz-range-thumb {
+    width: 15px;
+    height: 20px;
+    outline: none;
+    background:rgb(200,0,200);;
+    cursor: pointer;
+    
+  }

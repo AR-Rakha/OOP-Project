@@ -21,15 +21,19 @@ let separationSlider;
 let alignmentSlider;
 let cohesionSlider;
 let runAwaySlider;
-
 let rangeSlider;
+
 
 let separationSliderPredator;
 let alignmentSliderPredator;
 let cohesionSliderPredator;
 let huntSlider;
-
 let rangeSliderPredator;
+
+
+let ruleText;
+
+
 
 function setup() 
 {
@@ -38,33 +42,77 @@ function setup()
 	angleMode(DEGREES)
 
 	//values and position of sliders
-	separationSlider = createSlider(0, 5,0,0.5);
-	separationSlider.position(5, height+3)
-	alignmentSlider = createSlider(0, 1,0,0.1);
-	alignmentSlider.position(5, height+27)
-	cohesionSlider = createSlider(0, 1,0,0.1);
-	cohesionSlider.position(5, height+52)
-	runAwaySlider = createSlider(0, 1,0,0.1);
-	runAwaySlider.position(5, height+78)
 
-	rangeSlider = createSlider(0.5,2,1,0.5)
-	rangeSlider.position(150,height+39)
-	rangeSlider.style('transform', 'rotate(270deg)');
-	rangeSlider.style('width', '80px');
 	
-	separationSliderPredator = createSlider(0, 5,0,0.5);
-	separationSliderPredator.position(width-165, height+3)
-	alignmentSliderPredator = createSlider(0, 1,0,0.1);
-	alignmentSliderPredator.position(width-165, height+27)
-	cohesionSliderPredator = createSlider(0, 1,0,0.1);
-	cohesionSliderPredator.position(width-165, height+52)
-	huntSlider = createSlider(0, 1,0,0.1);
-	huntSlider.position(width-165, height+78)
 
-	rangeSliderPredator = createSlider(0.5,2,1,0.5)
-	rangeSliderPredator.position(width-230,height+39)
-	rangeSliderPredator.style('transform', 'rotate(270deg)');
-	rangeSliderPredator.style('width', '80px');
+	ruleText=createDiv('<h5>Separation</h5>');
+	ruleText.position(65, height+5);
+	separationSlider = createSlider(0, 5,0,0.5);
+	separationSlider.position(10, height+30)
+	separationSlider.addClass("slider");
+
+	ruleText=createDiv('<h5>Alignment</h5>');
+	ruleText.position(65, height+45);
+	alignmentSlider = createSlider(0, 1,0,0.1);
+	alignmentSlider.position(10, height+70);
+	alignmentSlider.addClass("slider");
+
+	ruleText=createDiv('<h5>Cohesion</h5>');
+	ruleText.position(65, height+85);
+	cohesionSlider = createSlider(0, 1,0,0.1);
+	cohesionSlider.position(10, height+110);
+	cohesionSlider.addClass("slider");
+
+
+	ruleText=createDiv('<h5>Run Away</h5>');
+	ruleText.position(265, height+5);
+	runAwaySlider = createSlider(0, 1,0,0.1);
+	runAwaySlider.position(210, height+30);
+	runAwaySlider.addClass("slider");
+
+
+	ruleText=createDiv('<h5>View Range</h5>');
+	ruleText.position(265, height+45);
+	rangeSlider = createSlider(0.5,2,1,0.1);
+	rangeSlider.position(210,height+70);
+	rangeSlider.addClass("slider");
+	
+
+	
+	
+	ruleText=createDiv('<h5>Separation</h5>');
+	ruleText.position(width-125, height+5);
+	separationSliderPredator = createSlider(0, 5,0,0.5);
+	separationSliderPredator.position(width-180, height+30);
+	separationSliderPredator.addClass("sliderPredator");
+
+	ruleText=createDiv('<h5>Alignment</h5>');
+	ruleText.position(width-125, height+45);
+	alignmentSliderPredator = createSlider(0, 1,0,0.1);
+	alignmentSliderPredator.position(width-180, height+70);
+	alignmentSliderPredator.addClass("sliderPredator");
+
+	ruleText=createDiv('<h5>Cohesion</h5>');
+	ruleText.position(width-125, height+85);
+	cohesionSliderPredator = createSlider(0, 1,0,0.1);
+	cohesionSliderPredator.position(width-180, height+110);
+	cohesionSliderPredator.addClass("sliderPredator");
+
+	ruleText=createDiv('<h5> Hunt </h5>');
+	ruleText.position(width-325, height+5);
+	huntSlider = createSlider(0, 1,0,0.1);
+	huntSlider.position(width-380, height+30);
+	huntSlider.addClass("sliderPredator");
+
+	ruleText=createDiv('<h5>View Range</h5>');
+	ruleText.position(width-325, height+45);
+	rangeSliderPredator = createSlider(0.5,2,1,0.1);
+	rangeSliderPredator.position(width-380,height+70);
+	rangeSliderPredator.addClass("sliderPredator");
+
+
+
+
 
 	// Color list for the boids because they have multiple shapes and colors
 	boidColor=[color(200,200,0),color(150,150,0),color(100,100,0),color(200,200,0)]
@@ -88,6 +136,8 @@ function setup()
 
 function draw()
 {
+
+
 	//Drawing the dark blue background
 	background(10,10,40);
 
