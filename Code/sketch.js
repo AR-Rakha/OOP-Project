@@ -5,9 +5,9 @@ let predators=[];
 
 
 //Number of boids
-let preyNum=300;
+let preyNum=200;
 
-let predatorNum=5;
+let predatorNum=10;
 
 
 // [base color, fin color, backfin color, tail color,]
@@ -144,32 +144,24 @@ function draw()
 	//Looping through the array of boids
 	for(let i=0; i<preyNum; i++){
 
-		//Checking if boid is a certant distance (60 px) of the border and and sets the desired direction accordingly
-		preys[i].border(60);
+		preys[i].wrapAround();
 
-		//Applies the rules to the boids (separation,alignment,cohesion) and sets the desired direction accordingly
 		preys[i].boidsAlgorithm(preys,predators);
 		
-		//Updates the velocity according to the acceleration and the position according to the velocity
 		preys[i].update();
 
-		//Draws the boid (fish shape)
 		preys[i].show();
 
 		preys[i].updateEnd();
 	}
 	for(let i=0; i<predatorNum; i++){
 
-		//Checking if boid is a certant distance (60 px) of the border and and sets the desired direction accordingly
-		predators[i].border(60);
+		predators[i].wrapAround();
 
-		//Applies the rules to the boids (separation,alignment,cohesion) and sets the desired direction accordingly
 		predators[i].boidsAlgorithm(predators,preys);
 		
-		//Updates the velocity according to the acceleration and the position according to the velocity
 		predators[i].update();
 
-		//Draws the boid (fish shape)
 		predators[i].show();
 
 		predators[i].updateEnd();

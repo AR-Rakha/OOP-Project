@@ -69,6 +69,16 @@ class vector {
         }
     }
 
+    setMinMaxLimit(min,max){
+        if (this.getMag() > max) {
+            this.normalize();
+            this.multi(max);
+        }else if (this.getMag() < min){
+            this.normalize();
+            this.multi(min);
+        }
+    }
+
     // Visual attributes
     setThickness(thickness) {
         this.thickness = thickness;

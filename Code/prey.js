@@ -5,12 +5,15 @@ class prey extends boid{
         //Max Speed
         this.maxspeed = 3;
 
+        //Min Speed
+        this.minspeed = 2;
+
         //Velocity
         this.vel=new vector(cos(this.heading)*this.maxspeed,sin(this.heading)*this.maxspeed);
 
 
         //Max force -  used to apply the desired direction smoothly to the acceleration
-        this.maxforce = 0.5;
+        this.maxforce = 0.4;
 
         //The rules view range
         this.separationView=25*rangeSlider.value();
@@ -46,21 +49,37 @@ class prey extends boid{
             //Separation
             let dx=this.pos.getX()-other.pos.getX();
             let dy=this.pos.getY()-other.pos.getY();
+
+            if (dx > -width / 2){
+                dx -= width;
+            }
+            if (dx < width / 2){
+                dx += width;
+            }
+
+            if (dy > -height / 2){
+                dy -= height;
+            }
+            if (dy < height / 2){
+                dy += height;
+            }
+
             let dist = Math.sqrt(dx*dx + dy*dy); 
 
-            let toOther = new vector(other.pos.getX()-this.pos.getX(),other.pos.getY()-this.pos.getY())
+            let toOther = new vector(-dx, -dy);
             let dotView = this.vel.dot(toOther)
 
-            let inView = dotView>-0.8;
+           
+            let inView = dotView>-0.2;
 
             
             if (other !== this&& dist <= this.separationView && dist > 0.0001 &&inView) {
                 let diff=new vector(dx,dy);
-                diff.multi(5/dist)
+                diff.multi(30/dist)
                 separationVector.add(diff); 
                 
                 separationTotal++;  
-                
+
             }
 
             //Alignment
@@ -72,7 +91,19 @@ class prey extends boid{
             
             //Cohesion
             if (other !== this&& dist <= this.cohesionView&&inView) {
-                cohesionVector.add(other.pos);
+                let correctedPos = new vector(other.pos.getX(), other.pos.getY());
+
+                // Wrap around correction
+                let dx = other.pos.getX() - this.pos.getX();
+                let dy = other.pos.getY() - this.pos.getY();
+
+                if (dx > width / 2) correctedPos.setX(other.pos.getX() - width);
+                if (dx < -width / 2) correctedPos.setX(other.pos.getX() + width);
+
+                if (dy > height / 2) correctedPos.setY(other.pos.getY() - height);
+                if (dy < -height / 2) correctedPos.setY(other.pos.getY() + height);
+
+                cohesionVector.add(correctedPos);
                 
                 cohesionTotal++;
             }
@@ -83,7 +114,7 @@ class prey extends boid{
             let dy=this.pos.getY()-other.pos.getY();
             let dist = Math.sqrt(dx*dx + dy*dy); 
 
-            if (other !== this&& dist <= 75) {
+            if (other !== this&& dist <= 75 ) {
                 let diff=new vector(dx,dy);
                 diff.multi(10/dist)
                 runAwayVector.add(diff); 

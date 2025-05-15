@@ -3,6 +3,9 @@ class boid{
 
         //Max Speed
         this.maxspeed = 0;
+
+        //Min Speed
+        this.minspeed = 0;
         
 
         //Max force -  used to apply the desired direction smoothly to the acceleration
@@ -141,7 +144,7 @@ class boid{
 
     update(){
         this.vel.add(this.acc);
-        this.vel.setMag(this.maxspeed);
+        this.vel.setMinMaxLimit(this.minspeed,this.maxspeed);
         this.pos.add(this.vel);
     }
 
@@ -170,10 +173,10 @@ class boid{
         this.cohesionView=75*rangeSlider.value();
         
         for (let other of boidsArray) {
-            
-            //Separation
+  
             let dx=this.pos.getX()-other.pos.getX();
             let dy=this.pos.getY()-other.pos.getY();
+
             let dist = Math.sqrt(dx*dx + dy*dy); 
 
             let toOther = new vector(other.pos.getX()-this.pos.getX(),other.pos.getY()-this.pos.getY())
@@ -182,9 +185,10 @@ class boid{
             let inView = dotView>-0.8;
 
             
+            //Separation
             if (other !== this&& dist <= this.separationView && dist > 0.0001 &&inView) {
                 let diff=new vector(dx,dy);
-                diff.multi(5/dist)
+                diff.multi(1/dist)
                 separationVector.add(diff); 
                 
                 separationTotal++;  
@@ -259,12 +263,18 @@ class boid{
         }
         
         if (desired !== null) {
-            desired.normalize();
-            desired.multi(this.maxspeed);
+            
+            desired.setMag(this.maxspeed);
             let steer = new vector(desired.getX()-this.vel.getX(),desired.getY()-this.vel.getY());;
-            steer.setLimit(this.maxforce*50);
+            steer.setLimit(this.maxforce);
             this.acc.add(steer)
         }
 
     }  
+
+
+    wrapAround(){
+        this.pos.setX((this.pos.getX() + width) % width);
+        this.pos.setY((this.pos.getY() + height) % height);
+    }
 }

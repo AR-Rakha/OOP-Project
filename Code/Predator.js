@@ -6,6 +6,9 @@ class predator extends boid{
         //Max Speed
         this.maxspeed=2;
 
+        //Min Speed
+        this.minspeed = 1;
+
         //Velocity
         this.vel=new vector(cos(this.heading)*this.maxspeed,sin(this.heading)*this.maxspeed);
         
@@ -13,9 +16,9 @@ class predator extends boid{
         this.maxforce = 0.15;
 
         //The rules view range
-        this.separationView=25*rangeSliderPredator.value();
-        this.alignmentView=50*rangeSliderPredator.value();
-        this.cohesionView=75*rangeSliderPredator.value();
+        this.separationView=30*rangeSliderPredator.value();
+        this.alignmentView=60*rangeSliderPredator.value();
+        this.cohesionView=90*rangeSliderPredator.value();
     
     }
 
@@ -140,9 +143,24 @@ class predator extends boid{
             //Separation
             let dx=this.pos.getX()-other.pos.getX();
             let dy=this.pos.getY()-other.pos.getY();
+
+            if (dx > -width / 2){
+                dx -= width;
+            }
+            if (dx < width / 2){
+                dx += width;
+            }
+
+            if (dy > -height / 2){
+                dy -= height;
+            }
+            if (dy < height / 2){
+                dy += height;
+            }
+
             let dist = Math.sqrt(dx*dx + dy*dy); 
 
-            let toOther = new vector(other.pos.getX()-this.pos.getX(),other.pos.getY()-this.pos.getY())
+            let toOther = new vector(-dx, -dy);
             let dotView = this.vel.dot(toOther)
 
             let inView = dotView>-0.6;
@@ -166,8 +184,20 @@ class predator extends boid{
             
             //Cohesion
             if (other !== this&& dist <= this.cohesionView&&inView) {
-                cohesionVector.add(other.pos);
-                
+                let correctedPos = new vector(other.pos.getX(), other.pos.getY());
+
+                // Wrap around correction
+                let dx = other.pos.getX() - this.pos.getX();
+                let dy = other.pos.getY() - this.pos.getY();
+
+                if (dx > width / 2) correctedPos.setX(other.pos.getX() - width);
+                if (dx < -width / 2) correctedPos.setX(other.pos.getX() + width);
+
+                if (dy > height / 2) correctedPos.setY(other.pos.getY() - height);
+                if (dy < -height / 2) correctedPos.setY(other.pos.getY() + height);
+
+                cohesionVector.add(correctedPos);
+
                 cohesionTotal++;
             }
         }
