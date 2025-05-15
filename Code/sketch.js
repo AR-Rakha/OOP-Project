@@ -1,11 +1,11 @@
 //Boids array/list
-let boids=[];
+let preys=[];
 
 let predators=[];
 
 
 //Number of boids
-let num=300;
+let preyNum=300;
 
 let predatorNum=5;
 
@@ -119,11 +119,11 @@ function setup()
 	boidColorPredator=[color(150,0,120),color(130,0,120),color(100,0,100),color(150,0,120)]
 
 	// Creating new boids with random position on a circle in a loop depending on the set numbers of boids
-	for (let i = 0; i < num; i++) {
+	for (let i = 0; i < preyNum; i++) {
 		let r = random(360);
-		boids.push(new boid(width/2+cos(r)*100, height/2+sin(r)*100));
+		preys.push(new prey(width/2+cos(r)*100, height/2+sin(r)*100));
 		//setting the colors
-		boids[i].setColor(boidColor[0],boidColor[1],boidColor[2],boidColor[3])
+		preys[i].setColor(boidColor[0],boidColor[1],boidColor[2],boidColor[3])
 	}
 
 	for (let i = 0; i < predatorNum; i++) {
@@ -142,21 +142,21 @@ function draw()
 	background(10,10,40);
 
 	//Looping through the array of boids
-	for(let i=0; i<num; i++){
+	for(let i=0; i<preyNum; i++){
 
 		//Checking if boid is a certant distance (60 px) of the border and and sets the desired direction accordingly
-		boids[i].border(60);
+		preys[i].border(60);
 
 		//Applies the rules to the boids (separation,alignment,cohesion) and sets the desired direction accordingly
-		boids[i].boidsAlgorithm(boids,predators);
+		preys[i].boidsAlgorithm(preys,predators);
 		
 		//Updates the velocity according to the acceleration and the position according to the velocity
-		boids[i].update();
+		preys[i].update();
 
 		//Draws the boid (fish shape)
-		boids[i].show();
+		preys[i].show();
 
-		boids[i].updateEnd();
+		preys[i].updateEnd();
 	}
 	for(let i=0; i<predatorNum; i++){
 
@@ -164,7 +164,7 @@ function draw()
 		predators[i].border(60);
 
 		//Applies the rules to the boids (separation,alignment,cohesion) and sets the desired direction accordingly
-		predators[i].boidsAlgorithm(predators,boids);
+		predators[i].boidsAlgorithm(predators,preys);
 		
 		//Updates the velocity according to the acceleration and the position according to the velocity
 		predators[i].update();

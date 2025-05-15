@@ -6,6 +6,9 @@ class predator extends boid{
         //Max Speed
         this.maxspeed=2;
 
+        //Velocity
+        this.vel=new vector(cos(this.heading)*this.maxspeed,sin(this.heading)*this.maxspeed);
+        
         //Max force -  used to apply the desired direction smoothly to the acceleration
         this.maxforce = 0.15;
 
@@ -173,8 +176,12 @@ class predator extends boid{
             let dx=other.pos.getX()-this.pos.getX();
             let dy=other.pos.getY()-this.pos.getY();
             let dist = Math.sqrt(dx*dx + dy*dy); 
+            let toOther = new vector(other.pos.getX()-this.pos.getX(),other.pos.getY()-this.pos.getY())
+            let dotView = this.vel.dot(toOther)
 
-            if (other !== this&& dist <= 125) {
+            let inView = dotView>-0.6;
+
+            if (other !== this&& dist <= 125&& dist > 0.001&&inView) {
                 let diff=new vector(dx,dy);
                 diff.multi(10/dist)
                 huntVector.add(diff); 

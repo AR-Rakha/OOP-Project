@@ -2,16 +2,16 @@ class boid{
     constructor(x,y){
 
         //Max Speed
-        this.maxspeed = 3;
+        this.maxspeed = 0;
         
 
         //Max force -  used to apply the desired direction smoothly to the acceleration
         this.maxforce = 0.5;
 
         //The rules view range
-        this.separationView=25*rangeSlider.value();
-        this.alignmentView=50*rangeSlider.value();
-        this.cohesionView=75*rangeSlider.value();
+        this.separationView=25;
+        this.alignmentView=50;
+        this.cohesionView=75;
         
         //Position
         this.pos=new vector(x,y);
@@ -156,8 +156,6 @@ class boid{
         let separationVector= new vector(0,0);
         let separationTotal = 0;
         
-        let runAwayVector= new vector(0,0);
-        let runAwayTotal = 0;
 
         //Alignment
         let alignmentVector= new vector(0,0);
@@ -207,20 +205,6 @@ class boid{
                 cohesionTotal++;
             }
         }
-        for (let other of predatorArray) {
-            //Separation
-            let dx=this.pos.getX()-other.pos.getX();
-            let dy=this.pos.getY()-other.pos.getY();
-            let dist = Math.sqrt(dx*dx + dy*dy); 
-
-            if (other !== this&& dist <= 75) {
-                let diff=new vector(dx,dy);
-                diff.multi(10/dist)
-                runAwayVector.add(diff); 
-                
-                runAwayTotal++;  
-            }
-        }
 
         if (separationTotal > 0) {
             separationVector.div(separationTotal);
@@ -256,17 +240,6 @@ class boid{
 
         this.acc.setLimit(this.maxforce);
         
-        if (runAwayTotal > 0) {
-            runAwayVector.div(runAwayTotal)
-            runAwayVector.setMag(this.maxspeed);
-            runAwayVector.sub(this.vel);
-            runAwayVector.setLimit(this.maxforce*3);
-            
-            //weight
-            runAwayVector.multi(runAwaySlider.value());
-            this.acc.add(runAwayVector);
-        }
-        this.acc.setLimit(this.maxforce*3);
         
     }
 
