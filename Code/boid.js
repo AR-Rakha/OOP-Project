@@ -2,20 +2,34 @@ class boid{
     constructor(x,y){
 
         //Max Speed
-        this.maxspeed = 0;
+        this.maxspeed;
 
         //Min Speed
-        this.minspeed = 0;
+        this.minspeed;
         
 
         //Max force -  used to apply the desired direction smoothly to the acceleration
         this.maxforce = 0.5;
 
         //The rules view range
-        this.separationView=25;
-        this.alignmentView=50;
-        this.cohesionView=75;
-        
+        this.separationView;
+        this.alignmentView;
+        this.cohesionView;
+
+        //Sliders
+        this.sSlider;
+        this.aSlider;
+        this.cSlider;
+        this.oSlider;
+
+        // viewAngle
+
+        // 1 = cant only se what is right in front of it - 0 degrees of view
+        // 0 = sees what is in front of it and not behind it - 180 degrees of view 
+        // -1 = sees everything - 360 degrees of view 
+
+        this.viewAngle=-0.3;
+
         //Position
         this.pos=new vector(x,y);
 
@@ -32,7 +46,6 @@ class boid{
         this.baseColor=color(200,200,0);
         this.finColor=color(200,200,0);
         this.backFinColor=color(200,200,0);
-        this.tailColor=color(200,200,0);
 
         //offsets the animation randomly so the animation of the boids is not sinced
         this.random=random(500);
@@ -40,19 +53,17 @@ class boid{
     }
 
     //Method for setting the color
-    setColor(baseColor,finColor,backFinColor,tailColor){
+    setColor(baseColor,finColor,backFinColor){
         this.baseColor=baseColor;
         this.finColor=finColor;
         this.backFinColor=backFinColor;
-        this.tailColor=tailColor;
+        
     }
 
     //Draws and animates the boids
-    show(){
+    show(size,animationSpeed){
         this.heading=atan2(this.vel.getY(),this.vel.getX())
-
         push();
-
         translate(this.pos.getX(), this.pos.getY());
         rotate(this.heading)
 
@@ -61,12 +72,11 @@ class boid{
 
         //animation
         
-        let aniFin = sin((millis()+this.random)*0.2*this.maxspeed*2);
-
-        let ani = sin((millis()+this.random)*0.2*this.maxspeed*2);
-        let offAni = sin((millis()+this.random+100)*0.2*this.maxspeed*2);
-        let offAni2 = sin((millis()+this.random-250)*0.2*this.maxspeed*2);
-        let offAni3 = sin((millis()+this.random-350)*0.2*this.maxspeed*2);
+        let aniFin = sin((millis()+this.random)*animationSpeed*this.vel.getMag());
+        let ani = sin((millis()+this.random)*animationSpeed*this.vel.getMag());
+        let offAni = sin((millis()+this.random+100)*animationSpeed*this.vel.getMag());
+        let offAni2 = sin((millis()+this.random-150)*animationSpeed*this.vel.getMag());
+        let offAni3 = sin((millis()+this.random-250)*animationSpeed*this.vel.getMag());
 
 
         //body
@@ -77,62 +87,64 @@ class boid{
             fill(this.finColor)
 
             //left fin
-            translate(2,1.5);
-            rotate(-aniFin*6-30);
-
-            ellipse(-1,0,4,1);
-
-            rotate(aniFin*6+30);
-            translate(-2,-1.5);
+            translate(2*size,1.5*size);
+            rotate(-ani*6-30);
+            ellipse(-1*size,0,4*size,1*size);
+            rotate(ani*6+30);
+            translate(-2*size,-1.5*size);
 
             //right fin
-            translate(2,-1.5);
+            translate(2*size,-1.5*size);
             rotate(-aniFin*6+30);
-
-            ellipse(-1,0,4,1);
-
+            ellipse(-1*size,0,4*size,1*size);
             rotate(aniFin*6-30);
-            translate(-2,1.5);
+            translate(-2*size,1.5*size);
 
         fill(this.baseColor)
-        ellipse(1,0, 7,4)
+        ellipse(1*size,0, 7*size,3.5*size)
 
+            
+        
+        
+        
+        
             //tail Start
-            translate(-1,0)
+            translate(-1*size,0)
             rotate(offAni2*10)
 
-            fill(this.tailColor)
-            ellipse(-1,0,7,2.5)
-
                 //tail End
-                translate(-3,0)
+                translate(-5*size,0)
+
                 rotate(offAni3*10)
-
-                fill(this.tailColor)
-                ellipse(-2,0,7,1)
-
+                fill(this.finColor)
+                ellipse(-0.5*size,0,7*size,1*size)
+                
+                
                 rotate(-offAni3*10)
-                translate(3,0)
+                translate(5*size,0)
             
+
+            fill(this.baseColor)
+            ellipse(-1*size,0,9*size,2.5*size)
             rotate(-offAni2*10)
-            translate(1,0)
+            translate(1*size,0)
 
             
         
             //head
-            translate(2,0)
+            translate(2*size,0)
+            
             rotate(-ani*15)   
-
             fill(this.baseColor)     
-            ellipse(1.5,0, 4,3)
+            ellipse(1*size,0, 4*size,2.75*size)
 
             rotate(ani*15)
-            translate(-2,0)
+            translate(-2*size,0)
 
 
             //backfin
             fill(this.backFinColor)
-            ellipse(0.5,0, 4,1)
+            ellipse(0,0, 4*size,0.5*size)
             
 
         //resets the rotation and transformation
@@ -148,12 +160,26 @@ class boid{
         this.pos.add(this.vel);
     }
 
+    updateSliders(rSlider,separationStrength,alignmentStrength,cohesionStrength){
+        this.separationView=separationStrength*rSlider.value();
+        this.alignmentView=alignmentStrength*rSlider.value();
+        this.cohesionView=cohesionStrength*rSlider.value();
+    }
+
+    setSliders(sS,aS,cS,oS){
+        this.sSlider=sS;
+        this.aSlider=aS;
+        this.cSlider=cS;
+        this.oSlider=oS;
+    }
 
     updateEnd(){
         this.acc.multi(0);
     }
 
-    boidsAlgorithm(boidsArray,predatorArray=[]){
+    
+
+    boidsAlgorithm(boidsArray,tunedSeparationStrength,tunedAlignmentStrength,tunedCohesionStrength){
 
         //Separation
         let separationVector= new vector(0,0);
@@ -167,26 +193,37 @@ class boid{
         //Cohesion
         let cohesionVector= new vector(0,0);
         let cohesionTotal = 0;
-
-        this.separationView=25*rangeSlider.value();
-        this.alignmentView=50*rangeSlider.value();
-        this.cohesionView=75*rangeSlider.value();
         
+
+
         for (let other of boidsArray) {
   
             let dx=this.pos.getX()-other.pos.getX();
             let dy=this.pos.getY()-other.pos.getY();
+            
+            if (dx > -width / 2){
+                dx -= width;
+            }
+            if (dx < width / 2){
+                dx += width;
+            }
+
+            if (dy > -height / 2){
+                dy -= height;
+            }
+            if (dy < height / 2){
+                dy += height;
+            }
 
             let dist = Math.sqrt(dx*dx + dy*dy); 
+           
+            let toOther = new vector(-dx, -dy);
+            let dotView = this.vel.dot(toOther);
 
-            let toOther = new vector(other.pos.getX()-this.pos.getX(),other.pos.getY()-this.pos.getY())
-            let dotView = this.vel.dot(toOther)
-
-            let inView = dotView>-0.8;
-
+            let inView = dotView > this.viewAngle; // field of view angle threshold
             
             //Separation
-            if (other !== this&& dist <= this.separationView && dist > 0.0001 &&inView) {
+            if (other !== this&& dist <= this.separationView && dist > 0.0001 && inView) {
                 let diff=new vector(dx,dy);
                 diff.multi(1/dist)
                 separationVector.add(diff); 
@@ -196,14 +233,14 @@ class boid{
             }
 
             //Alignment
-            if (other !== this&& dist <= this.alignmentView&&inView) {
+            if (other !== this&& dist <= this.alignmentView && inView) {
                 alignmentVector.add(other.vel);
 
                 alignmentTotal++;
             }
             
             //Cohesion
-            if (other !== this&& dist <= this.cohesionView&&inView) {
+            if (other !== this&& dist <= this.cohesionView && inView) {
                 cohesionVector.add(other.pos);
                 
                 cohesionTotal++;
@@ -212,33 +249,28 @@ class boid{
 
         if (separationTotal > 0) {
             separationVector.div(separationTotal);
-            separationVector.setMag(this.maxspeed);
-            separationVector.sub(this.vel); 
-            separationVector.setLimit(this.maxforce);
+
 
             //weight
-            separationVector.multi(separationSlider.value());
+            separationVector.multi(this.sSlider.value()*tunedSeparationStrength);
             this.acc.add(separationVector);
         }
 
         if (alignmentTotal > 0) {
             alignmentVector.div(alignmentTotal);
-            alignmentVector.setMag(this.maxspeed);
-            alignmentVector.sub(this.vel)
-            alignmentVector.setLimit(this.maxforce);
+
             
             //weight
-            alignmentVector.multi(alignmentSlider.value());
+            alignmentVector.multi(this.aSlider.value()*tunedAlignmentStrength);
             this.acc.add(alignmentVector);
         }
         
         if(cohesionTotal>0){
             cohesionVector.div(cohesionTotal);
             cohesionVector.sub(this.pos);
-            cohesionVector.setLimit(this.maxforce);
 
             //weight
-            cohesionVector.multi(cohesionSlider.value());
+            cohesionVector.multi(this.cSlider.value()*tunedCohesionStrength);
             this.acc.add(cohesionVector);
         }
 
@@ -247,7 +279,57 @@ class boid{
         
     }
 
-    
+
+    otherBoidsAlgorithm(otherBoidArray,otherBoidViewRange,tunedOtherStrength){
+        let runAwayVector= new vector(0,0);
+        let runAwayTotal = 0;
+
+        for (let other of otherBoidArray) {
+           
+            let dx=this.pos.getX()-other.pos.getX();
+            let dy=this.pos.getY()-other.pos.getY();
+            
+            if (dx > -width / 2){
+                dx -= width;
+            }
+            if (dx < width / 2){
+                dx += width;
+            }
+
+            if (dy > -height / 2){
+                dy -= height;
+            }
+            if (dy < height / 2){
+                dy += height;
+            }
+
+            let dist = Math.sqrt(dx*dx + dy*dy); 
+
+            let toOther = new vector(-dx, -dy);
+            let dotView = this.vel.dot(toOther);
+
+            let inView = dotView > -0.1;
+
+            if (other !== this&& dist <= otherBoidViewRange &&inView) {
+                let diff=new vector(dx,dy);
+                diff.multi(1/dist)
+                runAwayVector.add(diff); 
+                
+                runAwayTotal++;  
+            }
+        }
+
+        if (runAwayTotal > 0) {
+            runAwayVector.div(runAwayTotal)
+            
+            //weight
+            runAwayVector.multi(this.oSlider.value()*tunedOtherStrength);
+            this.acc.add(runAwayVector);
+        }
+        this.acc.setLimit(this.maxforce);
+    }
+
+
     //Method to Check the borders of the canvas
     border(offset){
         
