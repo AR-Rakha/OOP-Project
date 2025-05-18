@@ -198,33 +198,32 @@ class boid{
 
         for (let other of boidsArray) {
   
-            let dx=this.pos.getX()-other.pos.getX();
-            let dy=this.pos.getY()-other.pos.getY();
+            let toOther = new vector(other.pos.getX()-this.pos.getX(),other.pos.getY()-this.pos.getY());
             
-            if (dx > -width / 2){
-                dx -= width;
+            if (toOther.getX() > -width / 2){
+                toOther.setX(toOther.getX()-width);
             }
-            if (dx < width / 2){
-                dx += width;
-            }
-
-            if (dy > -height / 2){
-                dy -= height;
-            }
-            if (dy < height / 2){
-                dy += height;
+            if (toOther.getX() < width / 2){
+                toOther.setX(toOther.getX()+width);
             }
 
-            let dist = Math.sqrt(dx*dx + dy*dy); 
+            if (toOther.getY() > -height / 2){
+                toOther.setY(toOther.getY()-height);
+            }
+            if (toOther.getY() < height / 2){
+                toOther.setY(toOther.getY()+height);
+            }
+
+            let dist = toOther.getMag(); 
            
-            let toOther = new vector(-dx, -dy);
+
             let dotView = this.vel.dot(toOther);
 
             let inView = dotView > this.viewAngle; // field of view angle threshold
             
             //Separation
             if (other !== this&& dist <= this.separationView && dist > 0.0001 && inView) {
-                let diff=new vector(dx,dy);
+                let diff=toOther.copy().negative();
                 diff.multi(1/dist)
                 separationVector.add(diff); 
                 
@@ -286,32 +285,29 @@ class boid{
 
         for (let other of otherBoidArray) {
            
-            let dx=this.pos.getX()-other.pos.getX();
-            let dy=this.pos.getY()-other.pos.getY();
+            let toOther = new vector(other.pos.getX()-this.pos.getX(),other.pos.getY()-this.pos.getY());
             
-            if (dx > -width / 2){
-                dx -= width;
+            if (toOther.getX() > -width / 2){
+                toOther.setX(toOther.getX()-width);
             }
-            if (dx < width / 2){
-                dx += width;
-            }
-
-            if (dy > -height / 2){
-                dy -= height;
-            }
-            if (dy < height / 2){
-                dy += height;
+            if (toOther.getX() < width / 2){
+                toOther.setX(toOther.getX()+width);
             }
 
-            let dist = Math.sqrt(dx*dx + dy*dy); 
+            if (toOther.getY() > -height / 2){
+                toOther.setY(toOther.getY()-height);
+            }
+            if (toOther.getY() < height / 2){
+                toOther.setY(toOther.getY()+height);
+            }
 
-            let toOther = new vector(-dx, -dy);
+            let dist = toOther.getMag(); 
             let dotView = this.vel.dot(toOther);
 
-            let inView = dotView > -0.1;
+            let inView = dotView > this.viewAngle;
 
-            if (other !== this&& dist <= otherBoidViewRange &&inView) {
-                let diff=new vector(dx,dy);
+            if (other !== this&& dist <= otherBoidViewRange && dist > 0.0001 &&inView) {
+                let diff=toOther.copy().negative();
                 diff.multi(1/dist)
                 runAwayVector.add(diff); 
                 

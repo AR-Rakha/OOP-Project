@@ -28,32 +28,29 @@ class predator extends boid{
 
         for (let other of otherBoidArray) {
             //Hunt
-            let dx=other.pos.getX()-this.pos.getX();
-            let dy=other.pos.getY()-this.pos.getY();
-
-            if (dx > -width / 2){
-                dx -= width;
+            let toOther = new vector(other.pos.getX()-this.pos.getX(),other.pos.getY()-this.pos.getY());
+            
+            if (toOther.getX() > -width / 2){
+                toOther.setX(toOther.getX()-width);
             }
-            if (dx < width / 2){
-                dx += width;
-            }
-
-            if (dy > -height / 2){
-                dy -= height;
-            }
-            if (dy < height / 2){
-                dy += height;
+            if (toOther.getX() < width / 2){
+                toOther.setX(toOther.getX()+width);
             }
 
-            let dist = Math.sqrt(dx*dx + dy*dy); 
+            if (toOther.getY() > -height / 2){
+                toOther.setY(toOther.getY()-height);
+            }
+            if (toOther.getY() < height / 2){
+                toOther.setY(toOther.getY()+height);
+            }
 
-            let toOther = new vector(-dx, -dy);
+            let dist = toOther.getMag(); 
             let dotView = this.vel.dot(toOther);
 
             let inView = dotView > -0.1;
 
             if (other !== this&& dist <= otherBoidViewRange && dist > 0.001 && inView) {
-                let diff=new vector(dx,dy);
+                let diff=toOther.copy();
                 diff.multi(10/dist)
                 huntVector.add(diff); 
                 
