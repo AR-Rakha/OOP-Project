@@ -29,20 +29,6 @@ class predator extends boid{
         for (let other of otherBoidArray) {
             //Hunt
             let toOther = new vector(other.pos.getX()-this.pos.getX(),other.pos.getY()-this.pos.getY());
-            
-            if (toOther.getX() > -width / 2){
-                toOther.setX(toOther.getX()-width);
-            }
-            if (toOther.getX() < width / 2){
-                toOther.setX(toOther.getX()+width);
-            }
-
-            if (toOther.getY() > -height / 2){
-                toOther.setY(toOther.getY()-height);
-            }
-            if (toOther.getY() < height / 2){
-                toOther.setY(toOther.getY()+height);
-            }
 
             let dist = toOther.getMag(); 
             let dotView = this.vel.dot(toOther);
