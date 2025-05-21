@@ -37,7 +37,7 @@ class predator extends boid{
 
             if (other !== this&& dist <= otherBoidViewRange && dist > 0.001 && inView) {
                 let diff=toOther.copy();
-                diff.multi(10/dist)
+                diff.setMag(1/dist)
                 huntVector.add(diff); 
                 
                 huntTotal++;  

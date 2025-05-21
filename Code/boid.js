@@ -209,7 +209,7 @@ class boid{
             //Separation
             if (other !== this&& dist <= this.separationView && dist > 0.0001 && inView) {
                 let diff=toOther.copy().negative();
-                diff.multi(1/dist)
+                diff.setMag(1/dist)
                 separationVector.add(diff); 
                 
                 separationTotal++;  
@@ -280,7 +280,7 @@ class boid{
 
             if (other !== this&& dist <= otherBoidViewRange && dist > 0.0001 &&inView) {
                 let diff=toOther.copy().negative();
-                diff.multi(1/dist)
+                diff.setMag(1/dist)
                 runAwayVector.add(diff); 
                 
                 runAwayTotal++;  

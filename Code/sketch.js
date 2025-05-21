@@ -172,9 +172,9 @@ function draw()
 		
 		preys[i].updateSliders(rangeSlider,25,50,75);
 
-		preys[i].boidsAlgorithm(preys,10,1,0.01);
+		preys[i].boidsAlgorithm(preys,50,1,0.01);
 
-		preys[i].otherBoidsAlgorithm(predators,75,5);
+		preys[i].otherBoidsAlgorithm(predators,75,50);
 		
 		preys[i].update();
 
@@ -190,7 +190,7 @@ function draw()
 
 		predators[i].boidsAlgorithm(predators,10,1,0.01);
 
-		predators[i].otherBoidsAlgorithm(preys,150,1);
+		predators[i].otherBoidsAlgorithm(preys,150,10);
 		
 		predators[i].update();
 
